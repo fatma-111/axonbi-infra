@@ -1,0 +1,18 @@
+# Core agent
+langgraph>=0.2.0
+langchain-core>=0.3.0
+requests>=2.31.0
+
+# LLM-based classification (language/dialect detection, ref/phone
+# extraction, selection matching, confirmation parsing) - optional, only
+# used if OPENAI_API_KEY is set. Without it, tools.py falls back to
+# deterministic heuristics for all four touchpoints.
+openai>=1.30.0
+
+# .env loading (config.py) - local-dev convenience; LangGraph Platform
+# uses its own secrets store for production, see README/Part 7.
+python-dotenv>=1.0.0
+
+# HTTP wrapper (server.py)
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0

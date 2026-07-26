@@ -1,0 +1,20 @@
+# Guest Booking Cancellation Agent — HTTP wrapper around the LangGraph agent.
+# Bound to localhost only; nginx terminates TLS and proxies here.
+services:
+  cancel-agent:
+    build: .
+    image: cancel-agent:local
+    container_name: cancel-agent
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:5683:8000"
+    mem_limit: 900m
+    cpus: "0.75"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
