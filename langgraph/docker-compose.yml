@@ -1,0 +1,23 @@
+# Standalone compose project for the LangGraph runtime.
+# Isolated from /root/n8n/docker-compose.yml — its own project + network.
+# Bound to localhost only; nginx (langchain.axonbi.com) terminates TLS and proxies here.
+services:
+  langgraph:
+    build: .
+    image: langgraph-runtime:local
+    container_name: langgraph-runtime
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "127.0.0.1:5682:8000"
+    # Resource caps to protect the 1-vCPU / 5.8GB box (n8n-main, 3CX, OpenVPN share it)
+    mem_limit: 900m
+    memswap_limit: 1200m
+    cpus: "0.75"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
