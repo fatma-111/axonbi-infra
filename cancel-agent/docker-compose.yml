@@ -5,6 +5,9 @@ services:
     build: .
     image: cancel-agent:local
     container_name: cancel-agent
+    networks:
+      - default
+      - n8n
     restart: always
     env_file:
       - .env
@@ -18,3 +21,8 @@ services:
       timeout: 5s
       retries: 3
       start_period: 40s
+
+networks:
+  n8n:
+    name: n8n_default
+    external: true
